@@ -1,6 +1,5 @@
 import numpy as np
-#import pandas as pd
-import matplotlib.pyplot as plt
+from sklearn import metrics
 #from sklearn.model_selection import train_test_split
 import helper as hlp
 
@@ -13,9 +12,9 @@ def Activation(z):
         return -1
 
 
-def fit(x_train,y_train,epochs,eta):
-    w0=np.random.rand(2,1)
-    print(y_train)
+def fit(x_train,y_train,epochs,eta,bias):
+    print(x_train[0].shape[0])
+    w0 = np.random.rand(x_train[0].shape[0], 1)
     for ephoch in range(epochs):
         for i in range(len(x_train)):
             z=np.dot(x_train[i],w0)
@@ -24,9 +23,8 @@ def fit(x_train,y_train,epochs,eta):
             if a !=y_train[i]:
                 #calc loss
                 loss=y_train[i]-a
-                #@q=np.dot(loss,x_train[i]).reshape(2,1)
                 q=loss*x_train[i]
-                c=(eta*q).reshape(2,1)
+                c=(eta*q).reshape(x_train[0].shape[0],1)
                 w0=w0+c
 
     return w0
@@ -38,6 +36,9 @@ def predict(x_test,w):
         # compute Activation
         a = Activation(z)
         y_pred.append(a)
-
     return y_pred
 
+def evaluate_model(y_true,y_pred):
+    cm = metrics.confusion_matrix(y_true, y_pred)
+    accuracy=np.mean([y_pred==y_true])
+    return accuracy,cm

@@ -1,9 +1,11 @@
 from tkinter import  *
 from tkinter import  messagebox
-from sklearn import metrics
 import numpy as np
 import helper as hlp
 import Perceptron as prc
+
+
+
 class Checkbar(Frame):
     def __init__(self, parent=None, picks=[],text='select Feature',row_Num=0,col_num=0, side=LEFT, anchor=W):
         Frame.__init__(self, parent)
@@ -29,8 +31,6 @@ class Checkbar(Frame):
            [var.set(0) for var in self.vars]
 
 
-
-
 def Run_Perceptron(features,classes,epochs,learningRate,add_bias):
     epochs=int(epochs)
     learningRate=float(learningRate)
@@ -42,12 +42,12 @@ def Run_Perceptron(features,classes,epochs,learningRate,add_bias):
     for i in range(len(classes)):
         if classes[i]:
             selected_classes.append(i)
-    x_train, x_test, y_train, y_test = hlp.set_Data(selected_classes[0], selected_classes[1], selected_features[0],selected_features[1])
-    W=prc.fit(x_train,y_train,epochs,learningRate)
+    x_train, x_test, y_train, y_test = hlp.set_Data(selected_classes[0], selected_classes[1], selected_features[0],selected_features[1],add_bias)
+    W=prc.fit(x_train,y_train,epochs,learningRate,add_bias)
     print(W)
     y_pred=prc.predict(x_test,W)
-    cm=metrics.confusion_matrix(y_test,y_pred)
-    print(cm)
+    acc,cm=prc.evaluate_model(y_test,y_pred)
+    print(acc,cm)
 
 
 

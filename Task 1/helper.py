@@ -8,7 +8,7 @@ def read_file():
     dataset = np.asarray(D)
     return dataset,D
 
-def set_Data(c1, c2, f1, f2):
+def set_Data(c1, c2, f1, f2,bias):
 
     dataset,D=read_file()
 
@@ -33,6 +33,12 @@ def set_Data(c1, c2, f1, f2):
 
     X_train, Y_train = shuffle(X_train, Y_train, random_state=0)
     X_test, Y_test = shuffle(X_test, Y_test, random_state=0)
-
+    if bias:
+     X_train= add_bias(X_train)
+     X_test = add_bias(X_test)
     return X_train, X_test, Y_train, Y_test
 
+def add_bias(x):
+    X0 = np.ones((x.shape[0], 1))
+    x = np.concatenate((X0, x), axis=1)
+    return x
