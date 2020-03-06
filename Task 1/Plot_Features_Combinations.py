@@ -15,4 +15,16 @@ def Plot_data():
                 plt.ylabel('X' + str(feature_y + 1))
                 plt.show()
 
-Plot_data()
+
+def line(Y, x, w):
+    p = []
+    if len(w) == 2:
+        w = [0, w[0], w[1]]
+        x = np.concatenate((np.ones((x.shape[0], 1)), x), axis=1)
+    X = x[:, 1]
+    y = (w[1] * X + w[0]) / -w[2]
+    plt.plot(X, y, color="red", linewidth=3)
+    plt.scatter(x[:, 1][Y == 1], x[:, 2][Y == 1])
+    plt.scatter(x[:, 1][Y == -1], x[:, 2][Y == -1])
+    plt.show()
+# Plot_data()

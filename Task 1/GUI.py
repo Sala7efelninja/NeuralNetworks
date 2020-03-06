@@ -3,7 +3,7 @@ from tkinter import  messagebox
 import numpy as np
 import helper as hlp
 import Perceptron as prc
-
+from Plot_Features_Combinations import line
 
 
 class Checkbar(Frame):
@@ -47,7 +47,9 @@ def Run_Perceptron(features,classes,epochs,learningRate,add_bias):
     print(W)
     y_pred=prc.predict(x_test,W)
     acc,cm=prc.evaluate_model(y_test,y_pred)
-    print(acc,cm)
+    print(acc)
+    print(cm)
+    line(y_train,x_train,W)
 
 
 

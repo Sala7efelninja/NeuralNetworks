@@ -31,8 +31,8 @@ def set_Data(c1, c2, f1, f2,bias):
     Y_train = np.concatenate((y1_train, y2_train))
     Y_test = np.concatenate((y1_test, y2_test))
 
-    X_train, Y_train = shuffle(X_train, Y_train, random_state=0)
-    X_test, Y_test = shuffle(X_test, Y_test, random_state=0)
+    # X_train, Y_train = shuffle(X_train, Y_train, random_state=0)
+    # X_test, Y_test = shuffle(X_test, Y_test, random_state=0)
     if bias:
      X_train= add_bias(X_train)
      X_test = add_bias(X_test)
