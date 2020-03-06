@@ -15,6 +15,7 @@ def Activation(z):
 
 def fit(x_train,y_train,epochs,eta):
     w0=np.random.rand(2,1)
+    print(y_train)
     for ephoch in range(epochs):
         for i in range(len(x_train)):
             z=np.dot(x_train[i],w0)
@@ -22,7 +23,7 @@ def fit(x_train,y_train,epochs,eta):
             a=Activation(z)
             if a !=y_train[i]:
                 #calc loss
-                loss=a-y_train[i]
+                loss=y_train[i]-a
                 #@q=np.dot(loss,x_train[i]).reshape(2,1)
                 q=loss*x_train[i]
                 c=(eta*q).reshape(2,1)
