@@ -1,28 +1,42 @@
 import numpy as np
-import pandas as pd
+#import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
+#from sklearn.model_selection import train_test_split
+import helper as hlp
+
+def Activation(z):
+    if z == 0:
+        return 0
+    if z>0:
+        return 1
+    if z<0:
+        return -1
 
 
-class Perceptron:
-    def __init__(self, Cols, Classes=["Iris-versicolor", "Iris-virginica", "Iris-setosa"]):
-        self.Cols = Cols
-        self.Classes = Classes
-        X, Y = self.read_Date()
-        # Plot_Data(Data)
-        X = np.asarray(X)
-        Y = np.asarray(Y)
-        X_train, X_test, Y_train, Y_test = self.select_Data(X, Y, self.Cols, self.Classes)
-        W = np.random.rand(1, len(self.Cols) + 1)
+def fit(x_train,y_train,epochs,eta):
+    w0=np.random.rand(2,1)
+    for ephoch in range(epochs):
+        for i in range(len(x_train)):
+            z=np.dot(x_train[i],w0)
+            #compute Activation
+            a=Activation(z)
+            if a !=y_train[i]:
+                #calc loss
+                loss=a-y_train[i]
+                #@q=np.dot(loss,x_train[i]).reshape(2,1)
+                q=loss*x_train[i]
+                c=(eta*q).reshape(2,1)
+                w0=w0+c
 
-    def Plot_Data(Data):
-        plt.figure('fig1')
-        plt.scatter(Data['X1'], Data['X2'])
-        plt.scatter(Data['X1'], Data['X3'])
-        plt.scatter(Data['X1'], Data['X4'])
-        plt.scatter(Data['X2'], Data['X3'])
-        plt.scatter(Data['X2'], Data['X4'])
-        plt.scatter(Data['X3'], Data['X4'])
-        plt.xlabel("X")
-        plt.xlabel("Y")
-        plt.show()
+    return w0
+
+def predict(x_test,w):
+    y_pred=[]
+    for i in range(len(x_test)):
+        z = np.dot(x_test[i], w)
+        # compute Activation
+        a = Activation(z)
+        y_pred.append(a)
+
+    return y_pred
+
