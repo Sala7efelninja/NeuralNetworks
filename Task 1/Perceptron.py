@@ -1,7 +1,6 @@
 import numpy as np
 from sklearn import metrics
-#from sklearn.model_selection import train_test_split
-import helper as hlp
+
 
 def Activation(z):
     if z == 0:
@@ -12,7 +11,7 @@ def Activation(z):
         return -1
 
 
-def fit(x_train,y_train,epochs,eta,bias):
+def fit(x_train,y_train,epochs,eta):
     print(x_train[0].shape[0])
     w0 = np.random.rand(x_train[0].shape[0], 1)
     for ephoch in range(epochs):
@@ -42,3 +41,22 @@ def evaluate_model(y_true,y_pred):
     cm = metrics.confusion_matrix(y_true, y_pred)
     accuracy=np.mean([y_pred==y_true])
     return accuracy,cm
+
+
+
+def fit_adaline(x_train,y_train,eta,thresh):
+    w0 = np.random.rand(x_train[0].shape[0], 1)
+    while(True):
+        for i in range(len(x_train)):
+            y_pred = np.dot(x_train[i], w0)
+            #compute error
+            error=y_train[i]-y_pred
+            c=(eta*error*x_train[i]).reshape(w0.shape)
+            w0=w0+c
+        y_pred = np.dot(x_train, w0)
+        error = y_train.reshape(y_pred.shape)- y_pred
+        mse=sum(error**2)/len(x_train)
+        if mse<thresh:
+            break
+    print(mse)
+    return w0
