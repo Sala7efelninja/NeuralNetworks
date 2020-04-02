@@ -25,8 +25,9 @@ def Run(num_layers,num_neurons,epochs,learningRate,add_bias,activation):
     xy = hlp.set_Data(model.no_of_features,model.no_of_classes, add_bias)
     print("done")
     m=model(num_layers,num_neurons,epochs,learningRate,add_bias,xy,model.Sigmoid)
+    #TODO Activation Funciton switch
 
-Run(2,"2,3",10,0.01,1,"Sigmoid")
+Run(2,"2,5",10,0.01,1,"Sigmoid")
 
 def buildGui():
     root = Tk()

@@ -1,4 +1,5 @@
 import numpy as np
+import helper as hp
 
 class backPropragation:
     no_of_features = 4
@@ -17,26 +18,41 @@ class backPropragation:
         self.y_train=xy[2]
         self.y_test=xy[3]
         self.bias=bias
-        self.dim_of_weights=[self.no_of_features]+self.no_of_neurons+[self.no_of_classes+self.bias]
 
-        self.init_weights()
-        print(self.weights)
-        print(x)
-        print(self.activation(self, "Works OoO"))
+        self.dim_of_weights=[self.no_of_features]+self.no_of_neurons+[self.no_of_classes]
 
-    def init_weights(self):
-        self.weights=[]
-        for i in range(len(self.dim_of_weights)-1):
-            dim=np.random.rand(self.dim_of_weights[i+1],self.dim_of_weights[i]+self.bias,1)
+        self.init_network()
 
-            # print(dim.shape)
-            # print(dim[0, :, :])
+        # print(self.weights)
+        self.fit()
+
+
+    def init_network(self):
+        self.weights = []
+        self.f=[[] for i in range(len(self.dim_of_weights) - 1)]
+        for i in range(len(self.dim_of_weights) - 1):
+            dim = np.random.rand(self.dim_of_weights[i + 1], self.dim_of_weights[i] + self.bias)
+            # f   = np.random.ones(self.x_train.shape[0],self.dim_of_weights[i+1])
+            # print(f.shape)
+            # print(f)
             # print("...................")
             # print(dim[0, :, 0].reshape(dim[0, :, 0].shape[0],1))
             # print("...................")
-
+            # self.f.append(f)
             self.weights.append(dim)
 
-    def Sigmoid(self,x):
-        return x
+    def fit(self):
+        # for i in range(self.epochs):
+        self.forward()
+
+    def forward(self):
+        l=self.x_train
+        for i in range(self.no_of_layers+1):
+            if self.bias:
+                l=hp.add_bias(l)
+            l = np.dot(l, self.weights[i].T)
+            self.f[i]=self.activation(l)
+
+    def Sigmoid(x):
+        return 1/(1+np.exp(-1*x))
 

@@ -22,6 +22,7 @@ def set_Data(num_of_features,num_of_classes,bias):
         ce = cs +50
         x=np.array(dataset[cs:ce,:-1],dtype=float)
         y=np.ones(50,dtype="int8").reshape(50,1)*c
+        #TODO one hot encoder
 
         x1,x2,y1,y2=train_test_split(x, y, test_size=0.4, shuffle=True)
 
@@ -38,9 +39,10 @@ def set_Data(num_of_features,num_of_classes,bias):
 
     x_train, y_train = shuffle(x_train, y_train, random_state=0)
     x_test, y_test = shuffle(x_test, y_test, random_state=0)
-    if bias:
-     x_train= add_bias(x_train)
-     x_test = add_bias(x_test)
+    # if bias:
+    #  x_train= add_bias(x_train)
+    #  x_test = add_bias(x_test)
+
     return [x_train, x_test, y_train, y_test]
 
 def add_bias(x):
