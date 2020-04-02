@@ -56,3 +56,8 @@ class backPropragation:
     def Sigmoid(x):
         return 1/(1+np.exp(-1*x))
 
+    def tanh(x):
+        ex = np.exp(x)
+        nex = np.exp(-x)
+        return (ex-nex)/(ex+nex)
+

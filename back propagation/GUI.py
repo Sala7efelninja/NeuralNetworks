@@ -24,8 +24,8 @@ def Run(num_layers,num_neurons,epochs,learningRate,add_bias,activation):
 
     xy = hlp.set_Data(model.no_of_features,model.no_of_classes, add_bias)
     print("done")
-    m=model(num_layers,num_neurons,epochs,learningRate,add_bias,xy,model.Sigmoid)
-    #TODO Activation Funciton switch
+    activation=model.Sigmoid if activation=="Sigmoid" else model.tanh
+    m=model(num_layers,num_neurons,epochs,learningRate,add_bias,xy,activation)
 
 Run(2,"2,5",10,0.01,1,"Sigmoid")
 
