@@ -61,10 +61,10 @@ def Run_Perceptron(features,classes,epochs,learningRate,add_bias,thresh,stopping
 
 
 
-
-f=[1,1,0,0]
-c=[1,1,0,0]
-Run_Perceptron(f,c,0,0.01,True,0.5,stopping_condition="thresh")
+#
+# f=[1,1,0,0]
+# c=[1,1,0,0]
+# Run_Perceptron(f,c,0,0.01,True,0.5,stopping_condition="thresh")
 
 
 def buildGui():
@@ -100,4 +100,4 @@ def buildGui():
 
 
 
-# buildGui()
+buildGui()
