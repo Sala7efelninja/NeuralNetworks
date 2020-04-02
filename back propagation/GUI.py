@@ -22,9 +22,11 @@ def Run(num_layers,num_neurons,epochs,learningRate,add_bias,activation):
         messagebox.showerror(message="please Enter {} numbers for each layer separated by `,` ".format(num_layers))
         return
 
-    x_train, x_test, y_train, y_test = hlp.set_Data(model.number_of_features,model.number_of_classes, add_bias)
+    xy = hlp.set_Data(model.no_of_features,model.no_of_classes, add_bias)
+    print("done")
+    m=model(num_layers,num_neurons,epochs,learningRate,add_bias,xy,model.Sigmoid)
 
-# Run(3,"3,3,3",10,0.001,1,"Sigmoid")
+Run(2,"2,3",10,0.01,1,"Sigmoid")
 
 def buildGui():
     root = Tk()
@@ -72,4 +74,4 @@ def buildGui():
 
 
 
-buildGui()
+# buildGui()

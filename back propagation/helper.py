@@ -41,7 +41,7 @@ def set_Data(num_of_features,num_of_classes,bias):
     if bias:
      x_train= add_bias(x_train)
      x_test = add_bias(x_test)
-    return x_train, x_test, y_train, y_test
+    return [x_train, x_test, y_train, y_test]
 
 def add_bias(x):
     bias=np.ones((x.shape[0],1))
