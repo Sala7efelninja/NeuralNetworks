@@ -18,7 +18,9 @@ class backPropragation:
         self.y_train=xy[2]
         self.y_test=xy[3]
         self.bias=bias
-
+        if self.bias:
+            self.x_train = hp.add_bias( self.x_train)
+            self.x_test = hp.add_bias(self.x_test)
         self.dim_of_weights=[self.no_of_features]+self.no_of_neurons+[self.no_of_classes]
 
         self.init_network()
@@ -32,27 +34,48 @@ class backPropragation:
         self.f=[[] for i in range(len(self.dim_of_weights) - 1)]
         for i in range(len(self.dim_of_weights) - 1):
             dim = np.random.rand(self.dim_of_weights[i + 1], self.dim_of_weights[i] + self.bias)
-            # f   = np.random.ones(self.x_train.shape[0],self.dim_of_weights[i+1])
-            # print(f.shape)
-            # print(f)
-            # print("...................")
-            # print(dim[0, :, 0].reshape(dim[0, :, 0].shape[0],1))
-            # print("...................")
-            # self.f.append(f)
             self.weights.append(dim)
+            print(dim.shape)
 
     def fit(self):
-        # for i in range(self.epochs):
-        self.forward()
-
-    def forward(self):
-        l=self.x_train
+        for i in range(self.epochs):
+            self.forward(self.x_train)
+            self.reach_output()
+            self.backward()
+            self.update()
+    def forward(self,l):
         for i in range(self.no_of_layers+1):
-            if self.bias:
-                l=hp.add_bias(l)
             l = np.dot(l, self.weights[i].T)
             self.f[i]=self.activation(l)
+    def backward(self):
+        self.delta=[]
+        for i in reversed( range(self.no_of_layers+1)):
 
+            if i == self.no_of_layers:
+                d=(self.y_train-self.f[i])*self.f[i]*(1-self.f[i])
+                self.delta.append(d)
+            else:
+                print("i= ", i, "weight[i]= ", self.weights[i + 1].shape[0])
+                errors=[]
+                for j in range(self.weights[i+1].shape[0]):
+
+                    d=np.sum(self.delta[-1]*self.weights[i+1].T[j],axis=1).reshape(90,1)
+                    #print(self.f[i][:,j].T.shape).reshape(90,1)
+                    d=d*(self.f[i][:,j].reshape(90,1)*(1-self.f[i][:,j]).reshape(90,1))
+                    errors.append(d)
+                self.delta.append(np.concatenate(errors,axis=1))
+    def update(self):
+        if self.bias:
+            self.x_train=hp.add_bias(self.x_train)
+        self.weights[0] = self.weights[0] + self.lr *np.dot( self.delta[-1].T, self.x_train)
+        for i in range(1,self.no_of_layers+1):
+            if self.bias:
+                self.f[i-1] = hp.add_bias(self.f[i-1])
+            self.weights[i]=self.weights[i]+self.lr*np.dot(self.delta[-(i+1)].T,self.f[i-1])
+    def predict(self):
+        self.forward(self.x_test)
+        self.reach_output()
+        return self.f[-1]
     def Sigmoid(x):
         return 1/(1+np.exp(-1*x))
 
@@ -61,3 +84,8 @@ class backPropragation:
         nex = np.exp(-x)
         return (ex-nex)/(ex+nex)
 
+    def reach_output(self):
+        max_list=np.argmax(self.f[-1],axis=1)
+        self.f[-1]=np.asarray(self.f[-1]*0,dtype="int8")
+        for i in range(len(max_list)):
+            self.f[-1][i, max_list[i]] = 1

@@ -26,8 +26,10 @@ def Run(num_layers,num_neurons,epochs,learningRate,add_bias,activation):
     print("done")
     activation=model.Sigmoid if activation=="Sigmoid" else model.tanh
     m=model(num_layers,num_neurons,epochs,learningRate,add_bias,xy,activation)
-
-Run(2,"2,5",10,0.01,1,"Sigmoid")
+    y_pred=m.predict()
+    acc=np.mean(y_pred==m.y_test)
+    print(acc)
+Run(2,"2,5",100,0.01,0,"Sigmoid")
 
 def buildGui():
     root = Tk()
