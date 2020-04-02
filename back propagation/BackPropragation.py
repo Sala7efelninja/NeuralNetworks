@@ -39,6 +39,8 @@ class backPropragation:
 
     def fit(self):
         for i in range(self.epochs):
+            print("**********{}**********".format(i))
+            self.f = [[] for i in range(len(self.dim_of_weights) - 1)]
             self.forward(self.x_train)
             self.reach_output()
             self.backward()
@@ -47,6 +49,8 @@ class backPropragation:
         for i in range(self.no_of_layers+1):
             l = np.dot(l, self.weights[i].T)
             self.f[i]=self.activation(l)
+            if self.bias:
+                l= hp.add_bias(l)
     def backward(self):
         self.delta=[]
         for i in reversed( range(self.no_of_layers+1)):
@@ -55,18 +59,18 @@ class backPropragation:
                 d=(self.y_train-self.f[i])*self.f[i]*(1-self.f[i])
                 self.delta.append(d)
             else:
-                print("i= ", i, "weight[i]= ", self.weights[i + 1].shape[0])
+                print("i= ", i, "weight[i]= ", self.weights[i].shape[0]," ",self.weights[i].shape)
+                print(self.weights[i][0].shape)
                 errors=[]
-                for j in range(self.weights[i+1].shape[0]):
+                for j in range(self.weights[i].shape[0]):
 
                     d=np.sum(self.delta[-1]*self.weights[i+1].T[j],axis=1).reshape(90,1)
-                    #print(self.f[i][:,j].T.shape).reshape(90,1)
+
                     d=d*(self.f[i][:,j].reshape(90,1)*(1-self.f[i][:,j]).reshape(90,1))
                     errors.append(d)
                 self.delta.append(np.concatenate(errors,axis=1))
     def update(self):
-        if self.bias:
-            self.x_train=hp.add_bias(self.x_train)
+
         self.weights[0] = self.weights[0] + self.lr *np.dot( self.delta[-1].T, self.x_train)
         for i in range(1,self.no_of_layers+1):
             if self.bias:

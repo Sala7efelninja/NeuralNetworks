@@ -29,7 +29,7 @@ def Run(num_layers,num_neurons,epochs,learningRate,add_bias,activation):
     y_pred=m.predict()
     acc=np.mean(y_pred==m.y_test)
     print(acc)
-Run(2,"2,5",100,0.01,0,"Sigmoid")
+Run(2,"2,5",100,0.1,0,"Sigmoid")
 
 def buildGui():
     root = Tk()
